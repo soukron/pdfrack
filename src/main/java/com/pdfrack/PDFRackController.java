@@ -44,8 +44,8 @@ public class PDFRackController {
 
         for(int i = 0; i < mags.size() && i <= number; ++i) {
             PDFFile currentMag = (PDFFile)mags.get(i);
-            theHTML.append("<a href='/" + currentMag.getTheFile().getParentFile().getName() + "/" + currentMag.getTheFile().getName() + "'>");
-            theHTML.append("<img src='/" + currentMag.getTheFile().getParentFile().getName() + "/preview.jpg' height='200' width='152'></a>\n");
+            theHTML.append("<a href='/data/" + currentMag.getTheFile().getParentFile().getName() + "/" + currentMag.getTheFile().getName() + "'>");
+            theHTML.append("<img src='/data/" + currentMag.getTheFile().getParentFile().getName() + "/preview.jpg' height='200' width='152'></a>\n");
         }
 
         return theHTML.toString();
