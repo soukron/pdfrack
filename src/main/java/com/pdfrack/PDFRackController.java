@@ -37,7 +37,6 @@ public class PDFRackController {
 
     private String getHTML(int number, String directory) {
         StringBuffer theHTML = new StringBuffer();
-        new ArrayList();
         PDFFileUtil util = new PDFFileUtil();
         util.setDirectory(directory);
         ArrayList<PDFFile> mags = util.getAllMagazines();

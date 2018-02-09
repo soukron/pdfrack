@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 public class MvcConfig extends WebMvcConfigurerAdapter {
     @Autowired
     Environment environment;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/**")
-                .addResourceLocations("file:"+environment.getProperty("media"));
+        registry.addResourceHandler("data/**")
+        .addResourceLocations("file:" + environment.getProperty("media"));
     }
 }
