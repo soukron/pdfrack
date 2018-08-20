@@ -12,22 +12,22 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 
 public class PDFFileUtil {
-    public ArrayList<File> pdfFiles = new ArrayList();
-    private File magazineDirectory = new File("/home/zero/Stuff/download/magazines");
+    public ArrayList<File> pdfFiles = new ArrayList<File>();
+    private File fileDirectory = new File(".");
 
     public PDFFileUtil() {
     }
 
     public void setDirectory(String directory) {
-        this.magazineDirectory = new File(directory);
+        this.fileDirectory = new File(directory);
     }
 
-    private void getAllMagazineDirectories(File currentFile) {
+    private void getAllFileDirectories(File currentFile) {
         File[] listOfFiles = currentFile.listFiles();
 
         for(int i = 0; i < listOfFiles.length; ++i) {
             if(listOfFiles[i].isDirectory()) {
-                this.getAllMagazineDirectories(listOfFiles[i]);
+                this.getAllFileDirectories(listOfFiles[i]);
             } else if(listOfFiles[i].getName().toLowerCase().endsWith(".pdf")) {
                 this.pdfFiles.add(listOfFiles[i]);
             }
@@ -36,8 +36,8 @@ public class PDFFileUtil {
     }
 
     public ArrayList<PDFFile> getAllMagazines() {
-        ArrayList<PDFFile> mags = new ArrayList();
-        this.getAllMagazineDirectories(this.magazineDirectory);
+        ArrayList<PDFFile> titles = new ArrayList<PDFFile>();
+        this.getAllFileDirectories(this.fileDirectory);
         this.pdfFiles.sort(new Comparator<File>() {
             public int compare(File f1, File f2) {
                 return Long.valueOf(f1.lastModified()).compareTo(Long.valueOf(f2.lastModified()));
@@ -48,28 +48,28 @@ public class PDFFileUtil {
 
         while(var2.hasNext()) {
             File tempFile = (File)var2.next();
-            PDFFile theMag = new PDFFile();
-            theMag.setTheFile(tempFile);
-            mags.add(theMag);
-            this.createPreviewImageFromPDF(theMag);
+            PDFFile theTitle = new PDFFile();
+            theTitle.setTheFile(tempFile);
+            titles.add(theTitle);
+            this.createPreviewImageFromPDF(theTitle);
         }
 
-        return mags;
+        return titles;
     }
 
-    private void createPreviewImageFromPDF(PDFFile theMag) {
+    private void createPreviewImageFromPDF(PDFFile theTitle) {
         try {
-            File previewImage = new File(theMag.getTheFile().getParentFile() + "/preview.jpg");
+            File previewImage = new File(theTitle.getTheFile().getParentFile() + "/" + theTitle.theFile.getName() + "_preview.jpg");
             if(!previewImage.exists()) {
-                PDDocument document = PDDocument.load(theMag.getTheFile());
+                PDDocument document = PDDocument.load(theTitle.getTheFile());
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
-                System.out.println("getting " + theMag.theFile.getName());
+                System.out.println("getting " + theTitle.theFile.getName());
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 22.0F, ImageType.RGB);
-                ImageIOUtil.writeImage(bim, theMag.getTheFile().getParentFile().getAbsolutePath() + "/preview.jpg", 300);
+                ImageIOUtil.writeImage(bim, theTitle.getTheFile().getParentFile().getAbsolutePath() + "/" + theTitle.theFile.getName() + "_preview.jpg", 300);
                 document.close();
             }
         } catch (Exception var6) {
-            System.out.println(theMag.getTheFile().getName());
+            System.out.println(theTitle.getTheFile().getName());
             var6.printStackTrace();
         }
 
