@@ -16,7 +16,7 @@ public class PDFRackApplication {
 	public static void main(String[] args) {
 
 		if(args.length == 0 || !args[0].startsWith("--media")) {
-			System.err.println("Usage java -jar JARNAME --media=PathToMedia");
+			System.err.println("Usage java -jar JARNAME --media=PathToMedia\nIf using OpenShift, add a persistent volume and add JAVA_ARGS to envronment variables with --media=PATH");
 			System.exit(1);
 		}
 
