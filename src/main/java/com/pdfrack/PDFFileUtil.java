@@ -35,7 +35,7 @@ public class PDFFileUtil {
 
     }
 
-    public ArrayList<PDFFile> getAllMagazines() {
+    public ArrayList<PDFFile> getAllPDFs() {
         ArrayList<PDFFile> titles = new ArrayList<PDFFile>();
         this.getAllFileDirectories(this.fileDirectory);
         this.pdfFiles.sort(new Comparator<File>() {

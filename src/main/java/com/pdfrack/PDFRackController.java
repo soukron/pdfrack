@@ -5,9 +5,13 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.apache.commons.io.FileUtils;
-import java.io.File;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 
 @RestController
@@ -41,12 +45,12 @@ public class PDFRackController {
         StringBuffer theHTML = new StringBuffer();
         PDFFileUtil util = new PDFFileUtil();
         util.setDirectory(directory);
-        ArrayList<PDFFile> titles = util.getAllMagazines();
+        ArrayList<PDFFile> titles = util.getAllPDFs();
 
         // if we don't have any books, download a couple of OpenShift books
         if(titles.size() < 1) {
             this.downloadBooks(directory);
-            titles = util.getAllMagazines();
+            titles = util.getAllPDFs();
         }
 
         for(int i = 0; i < titles.size() && i <= number; ++i) {
@@ -62,9 +66,25 @@ public class PDFRackController {
         String developersBook = new String("https://assets.openshift.com/hubfs/pdfs/OpenShift_for_Developers_Red_Hat.pdf");
         String deployBook = new String("https://assets.openshift.com/hubfs/pdfs/Deploying_to_OpenShift.pdf");
 
+        System.setProperty("http.agent", "Chrome");
+
+        // Using nio so it will not consume memory in the container
         try {
-            FileUtils.copyURLToFile(new URL(developersBook), new File(directory + "/developers.pdf"));
-            FileUtils.copyURLToFile(new URL(deployBook), new File(directory + "/deploy.pdf"));
+            System.out.println("Downloading some books");
+            this.downloadWithJavaNIO(deployBook, directory + "/deploy.pdf");
+            this.downloadWithJavaNIO(developersBook, directory + "/developer.pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void downloadWithJavaNIO(String fileURL, String localFilename) throws IOException {
+        System.out.println("Grabbing " + fileURL + " and storing at " + localFilename);
+        URL url = new URL(fileURL);
+        try (ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream(localFilename); FileChannel fileChannel = fileOutputStream.getChannel()) {
+
+            fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
         } catch (Exception e) {
             e.printStackTrace();
         }
