@@ -70,7 +70,6 @@ public class PDFRackController {
 
         // Using nio so it will not consume memory in the container
         try {
-            System.out.println("Downloading some books");
             this.downloadWithJavaNIO(deployBook, directory + "/deploy.pdf");
             this.downloadWithJavaNIO(developersBook, directory + "/developer.pdf");
         } catch (Exception e) {
@@ -79,7 +78,6 @@ public class PDFRackController {
     }
 
     public void downloadWithJavaNIO(String fileURL, String localFilename) throws IOException {
-        System.out.println("Grabbing " + fileURL + " and storing at " + localFilename);
         URL url = new URL(fileURL);
         try (ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(localFilename); FileChannel fileChannel = fileOutputStream.getChannel()) {
