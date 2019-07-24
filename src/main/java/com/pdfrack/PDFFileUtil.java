@@ -51,20 +51,24 @@ public class PDFFileUtil {
             PDFFile theTitle = new PDFFile();
             theTitle.setTheFile(tempFile);
             titles.add(theTitle);
-            this.createPreviewImageFromPDF(theTitle);
+            this.createPreviewImageAndMetaDataFromPDF(theTitle);
         }
 
         return titles;
     }
 
-    private void createPreviewImageFromPDF(PDFFile theTitle) {
+    private void createPreviewImageAndMetaDataFromPDF(PDFFile theTitle) {
         try {
             File previewImage = new File(theTitle.getTheFile().getParentFile() + "/" + theTitle.theFile.getName() + "_preview.jpg");
+
+            // Create the page count metadata
+            PDDocument document = PDDocument.load(theTitle.getTheFile());
+            theTitle.setPages(document.getNumberOfPages());
+
             if(!previewImage.exists()) {
-                PDDocument document = PDDocument.load(theTitle.getTheFile());
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
                 System.out.println("getting " + theTitle.theFile.getName());
-                BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 22.0F, ImageType.RGB);
+                BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 50.0F, ImageType.RGB);
                 ImageIOUtil.writeImage(bim, theTitle.getTheFile().getParentFile().getAbsolutePath() + "/" + theTitle.theFile.getName() + "_preview.jpg", 300);
                 document.close();
             }

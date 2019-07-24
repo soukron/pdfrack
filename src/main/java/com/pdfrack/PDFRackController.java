@@ -47,6 +47,26 @@ public class PDFRackController {
         util.setDirectory(directory);
         ArrayList<PDFFile> titles = util.getAllPDFs();
 
+        // Setup the HTML page
+        theHTML.append("<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "    <head>\n" +
+                "       <style>\n" +
+                        "  .bordered {\n" +
+                        "    width: 229px;\n" +
+                        "    height: 350px;\n" +
+                        "    padding: 20px;\n" +
+                        "    border: 1px solid darkorange;\n" +
+                        "    border-radius: 8px;\n" +
+                        "  }\n" +
+                        "</style>" +
+                "        <title>PDF Rack</title>\n" +
+                "    </head>\n" +
+                "    <body>" +
+                "   <table>" +
+                "    <tr>");
+
+
         // if we don't have any books, download a couple of OpenShift books
         if(titles.size() < 1) {
             this.downloadBooks(directory);
@@ -55,10 +75,16 @@ public class PDFRackController {
 
         for(int i = 0; i < titles.size() && i <= number; ++i) {
             PDFFile currentTitle = (PDFFile)titles.get(i);
-            theHTML.append("<a href='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() + "'>");
-            theHTML.append("<img src='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() +"_preview.jpg' height='200' width='152'></a>\n");
+            System.out.println("Title is " + currentTitle.getTheFile().getName());
+            theHTML.append("<td><div class=\"bordered\"><a href='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() + "'>");
+            theHTML.append("<img src='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() +"_preview.jpg' height='298' width='227'></a><br>" +
+                    "Filename: " + currentTitle.getTheFile().getName() +
+                    "<br>" +
+                    "Pages: " + currentTitle.getPages() +
+                    "</div></td>\n");
         }
 
+        theHTML.append("</tr></body></html>");
         return theHTML.toString();
     }
 
