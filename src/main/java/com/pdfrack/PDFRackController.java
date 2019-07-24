@@ -52,19 +52,18 @@ public class PDFRackController {
                 "<html>\n" +
                 "    <head>\n" +
                 "       <style>\n" +
-                        "  .bordered {\n" +
-                        "    width: 229px;\n" +
-                        "    height: 350px;\n" +
-                        "    padding: 20px;\n" +
-                        "    border: 1px solid darkorange;\n" +
-                        "    border-radius: 8px;\n" +
-                        "  }\n" +
-                        "</style>" +
+                "  .bordered {\n" +
+                "    padding: 5px;\n" +
+                "    border: 1px solid darkorange;\n" +
+                "    border-radius: 8px;\n" +
+                "  }\n" +
+                "</style>" +
+                "       <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>" +
                 "        <title>PDF Rack</title>\n" +
                 "    </head>\n" +
                 "    <body>" +
-                "   <table>" +
-                "    <tr>");
+                "    <div class='container'>" +
+                "       <div class='row'>");
 
 
         // if we don't have any books, download a couple of OpenShift books
@@ -76,15 +75,15 @@ public class PDFRackController {
         for(int i = 0; i < titles.size() && i <= number; ++i) {
             PDFFile currentTitle = (PDFFile)titles.get(i);
             System.out.println("Title is " + currentTitle.getTheFile().getName());
-            theHTML.append("<td><div class=\"bordered\"><a href='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() + "'>");
-            theHTML.append("<img src='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() +"_preview.jpg' height='298' width='227'></a><br>" +
+            theHTML.append("<div class=\"col-6 col-md-4 col-lg-3 bordered\"><a href='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() + "'>");
+            theHTML.append("<img width='90%' src='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() +"_preview.jpg' ></a><br>" +
                     "Filename: " + currentTitle.getTheFile().getName() +
                     "<br>" +
                     "Pages: " + currentTitle.getPages() +
-                    "</div></td>\n");
+                    "</div>\n");
         }
 
-        theHTML.append("</tr></body></html>");
+        theHTML.append("</div></div></body></html>");
         return theHTML.toString();
     }
 
@@ -114,4 +113,3 @@ public class PDFRackController {
         }
     }
 }
-

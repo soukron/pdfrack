@@ -70,12 +70,11 @@ public class PDFFileUtil {
                 System.out.println("getting " + theTitle.theFile.getName());
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 50.0F, ImageType.RGB);
                 ImageIOUtil.writeImage(bim, theTitle.getTheFile().getParentFile().getAbsolutePath() + "/" + theTitle.theFile.getName() + "_preview.jpg", 300);
-                document.close();
             }
+            document.close();
         } catch (Exception var6) {
             System.out.println(theTitle.getTheFile().getName());
             var6.printStackTrace();
         }
-
     }
 }
