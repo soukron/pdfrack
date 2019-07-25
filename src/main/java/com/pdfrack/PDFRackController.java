@@ -19,11 +19,6 @@ public class PDFRackController {
     @Autowired
     Environment environment;
 
-    @RequestMapping("hello")
-    public String sayHello(){
-        return ("Hello, " + environment.getProperty("media"));
-    }
-
     @RequestMapping("rack/{num}")
     public String getRack(@PathVariable int num) {
 
@@ -67,16 +62,16 @@ public class PDFRackController {
 
 
         // if we don't have any books, download a couple of OpenShift books
-        if(titles.size() < 1) {
+        if (titles.size() < 1) {
             this.downloadBooks(directory);
             titles = util.getAllPDFs();
         }
 
-        for(int i = 0; i < titles.size() && i <= number; ++i) {
-            PDFFile currentTitle = (PDFFile)titles.get(i);
+        for (int i = 0; i < titles.size() && i <= number; ++i) {
+            PDFFile currentTitle = (PDFFile) titles.get(i);
             System.out.println("Title is " + currentTitle.getTheFile().getName());
             theHTML.append("<div class=\"col-6 col-md-4 col-lg-3 bordered\"><a href='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() + "'>");
-            theHTML.append("<img width='90%' src='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() +"_preview.jpg' ></a><br>" +
+            theHTML.append("<img width='90%' src='/data/" + currentTitle.getTheFile().getParentFile().getName() + "/" + currentTitle.getTheFile().getName() + "_preview.jpg' ></a><br>" +
                     "Filename: " + currentTitle.getTheFile().getName() +
                     "<br>" +
                     "Pages: " + currentTitle.getPages() +

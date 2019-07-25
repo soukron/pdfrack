@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -25,10 +26,10 @@ public class PDFFileUtil {
     private void getAllFileDirectories(File currentFile) {
         File[] listOfFiles = currentFile.listFiles();
 
-        for(int i = 0; i < listOfFiles.length; ++i) {
-            if(listOfFiles[i].isDirectory()) {
+        for (int i = 0; i < listOfFiles.length; ++i) {
+            if (listOfFiles[i].isDirectory()) {
                 this.getAllFileDirectories(listOfFiles[i]);
-            } else if(listOfFiles[i].getName().toLowerCase().endsWith(".pdf")) {
+            } else if (listOfFiles[i].getName().toLowerCase().endsWith(".pdf")) {
                 this.pdfFiles.add(listOfFiles[i]);
             }
         }
@@ -44,10 +45,10 @@ public class PDFFileUtil {
             }
         });
         Collections.reverse(this.pdfFiles);
-        Iterator var2 = this.pdfFiles.iterator();
+        Iterator iterator = this.pdfFiles.iterator();
 
-        while(var2.hasNext()) {
-            File tempFile = (File)var2.next();
+        while (iterator.hasNext()) {
+            File tempFile = (File) iterator.next();
             PDFFile theTitle = new PDFFile();
             theTitle.setTheFile(tempFile);
             titles.add(theTitle);
@@ -65,7 +66,7 @@ public class PDFFileUtil {
             PDDocument document = PDDocument.load(theTitle.getTheFile());
             theTitle.setPages(document.getNumberOfPages());
 
-            if(!previewImage.exists()) {
+            if (!previewImage.exists()) {
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
                 System.out.println("getting " + theTitle.theFile.getName());
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(0, 50.0F, ImageType.RGB);

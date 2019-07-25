@@ -17,6 +17,7 @@ public class PDFFile {
     public void setTheFile(File theFile) {
         this.theFile = theFile;
     }
+
     public int getPages() {
         return pages;
     }

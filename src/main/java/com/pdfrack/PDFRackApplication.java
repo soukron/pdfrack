@@ -10,17 +10,17 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 public class PDFRackApplication {
 
-	@Autowired
-	private static Environment environment;
+    @Autowired
+    private static Environment environment;
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		if(args.length == 0 || !args[0].startsWith("--media")) {
-			System.err.println("Usage java -jar JARNAME --media=PathToMedia\nIf using OpenShift, add a persistent volume and add an environment variable called JAVA_ARGS with a value of --media=PATH");
-			System.exit(1);
-		}
+        if (args.length == 0 || !args[0].startsWith("--media")) {
+            System.err.println("Usage java -jar JARNAME --media=PathToMedia\nIf using OpenShift, add a persistent volume and add an environment variable called JAVA_ARGS with a value of --media=PATH");
+            System.exit(1);
+        }
 
-		SpringApplication.run(PDFRackApplication.class, args);
+        SpringApplication.run(PDFRackApplication.class, args);
 
-	}
+    }
 }
