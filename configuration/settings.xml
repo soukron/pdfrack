@@ -1,0 +1,35 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+    https://maven.apache.org/xsd/settings-1.0.0.xsd">
+      <profiles>
+        <profile>
+          <id>nexus</id>
+          <properties>
+            <nexus.url>https://nexus.pjm.com/nexus</nexus.url>
+            <clm.serverUrl>https://nexusiq.pjm.com</clm.serverUrl>
+            <clm.username>****</clm.username>
+            <clm.password>****</clm.password>
+          </properties>
+        </profile>
+      </profiles>
+      <activeProfiles>
+        <!-- make the profile active all the time -->
+        <activeProfile>nexus</activeProfile>
+      </activeProfiles>
+      <mirrors>
+        <mirror>
+          <id>nexus-teamcity</id>
+          <mirrorOf>*</mirrorOf>
+          <url>https://nexus.pjm.com/nexus/content/groups/teamcity</url>
+        </mirror>
+      </mirrors>
+      <servers>
+        <server>
+          <id>nexus-teamcity</id>
+          <!-- zzteamcity -->
+          <username>****</username>
+          <password>****</password>
+        </server>
+      </servers>
+    </settings>
